@@ -76,7 +76,7 @@ def build_manifest():
             with open(subj_meta_path, encoding="utf-8") as f:
                 subj_meta = json.load(f)
 
-        subj_id    = re.sub(r"^\d+-", "", subj_dir)
+        subj_id    = subj_dir
         subj_title = subj_meta.get("title", slug_to_title(subj_dir))
         subj_icon  = subj_meta.get("icon",  get_icon_for_subject(subj_dir))
         subj_desc  = subj_meta.get("description", "")
@@ -96,7 +96,7 @@ def build_manifest():
                 with open(chap_meta_path, encoding="utf-8") as f:
                     chap_meta = json.load(f)
 
-            chap_id    = re.sub(r"^\d+-", "", chap_dir)
+            chap_id    = chap_dir
             chap_title = chap_meta.get("title", slug_to_title(chap_dir))
 
             topics = []
@@ -108,7 +108,7 @@ def build_manifest():
                     raw = f.read()
 
                 meta = parse_front_matter(raw)
-                topic_id    = re.sub(r"^\d+-", "", fname[:-3])  # 확장자 제거
+                topic_id    = fname[:-3]  # 확장자만 제거, 숫자 접두사 유지
                 topic_title = meta.get("title", slug_to_title(fname[:-3]))
                 topic_tags  = meta.get("tags", [])
                 topics.append({

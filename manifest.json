@@ -1,18 +1,18 @@
 {
   "subjects": [
     {
-      "id": "data-structures",
+      "id": "01-data-structures",
       "title": "Data Structures",
       "icon": "🗂️",
       "description": "",
       "color": "#7c3aed",
       "chapters": [
         {
-          "id": "linear",
+          "id": "01-linear",
           "title": "Linear",
           "topics": [
             {
-              "id": "array",
+              "id": "01-array",
               "title": "배열 (Array)",
               "tags": [
                 "array",
@@ -21,7 +21,7 @@
               ]
             },
             {
-              "id": "linked-list",
+              "id": "02-linked-list",
               "title": "연결 리스트 (Linked List)",
               "tags": [
                 "linked-list",
@@ -30,7 +30,7 @@
               ]
             },
             {
-              "id": "stack",
+              "id": "03-stack",
               "title": "스택 (Stack)",
               "tags": [
                 "stack",
@@ -40,7 +40,7 @@
               ]
             },
             {
-              "id": "queue",
+              "id": "04-queue",
               "title": "큐 (Queue)",
               "tags": [
                 "queue",
@@ -54,18 +54,18 @@
       ]
     },
     {
-      "id": "sorting",
+      "id": "02-sorting",
       "title": "Sorting",
       "icon": "🔢",
       "description": "",
       "color": "#2563eb",
       "chapters": [
         {
-          "id": "comparison",
+          "id": "01-comparison",
           "title": "Comparison",
           "topics": [
             {
-              "id": "merge",
+              "id": "04-merge",
               "title": "합병 정렬 (Merge Sort)",
               "tags": [
                 "merge-sort",
@@ -75,7 +75,7 @@
               ]
             },
             {
-              "id": "quick",
+              "id": "05-quick",
               "title": "퀵 정렬 (Quick Sort)",
               "tags": [
                 "quick-sort",
@@ -89,18 +89,18 @@
       ]
     },
     {
-      "id": "searching",
+      "id": "03-searching",
       "title": "Searching",
       "icon": "🔍",
       "description": "",
       "color": "#0891b2",
       "chapters": [
         {
-          "id": "graph-traversal",
+          "id": "02-graph-traversal",
           "title": "Graph Traversal",
           "topics": [
             {
-              "id": "bfs",
+              "id": "01-bfs",
               "title": "너비 우선 탐색 (BFS)",
               "tags": [
                 "BFS",
@@ -110,7 +110,7 @@
               ]
             },
             {
-              "id": "dfs",
+              "id": "02-dfs",
               "title": "깊이 우선 탐색 (DFS)",
               "tags": [
                 "DFS",
@@ -124,18 +124,18 @@
       ]
     },
     {
-      "id": "dynamic-programming",
+      "id": "04-dynamic-programming",
       "title": "Dynamic Programming",
       "icon": "📐",
       "description": "",
       "color": "#059669",
       "chapters": [
         {
-          "id": "basics",
+          "id": "01-basics",
           "title": "Basics",
           "topics": [
             {
-              "id": "intro",
+              "id": "01-intro",
               "title": "DP 개념과 접근법",
               "tags": [
                 "dynamic-programming",
@@ -149,18 +149,18 @@
       ]
     },
     {
-      "id": "graph",
+      "id": "06-graph",
       "title": "Graph",
       "icon": "🕸️",
       "description": "",
-      "color": "#d97706",
+      "color": "#dc2626",
       "chapters": [
         {
-          "id": "shortest-path",
+          "id": "01-shortest-path",
           "title": "Shortest Path",
           "topics": [
             {
-              "id": "dijkstra",
+              "id": "01-dijkstra",
               "title": "다익스트라 (Dijkstra)",
               "tags": [
                 "dijkstra",
