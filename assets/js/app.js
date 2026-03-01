@@ -33,7 +33,7 @@ function updateGlobalProgress() {
 
 /* ─── Manifest ─── */
 async function loadManifest() {
-  const res = await fetch('manifest.json');
+  const res = await fetch('manifest.json', { cache: 'no-store' });
   state.manifest = await res.json();
 }
 
@@ -168,9 +168,10 @@ async function loadContent(hash) {
   const body = $('markdownBody');
   body.innerHTML = '<p style="color:var(--text-muted)">로딩 중...</p>';
 
+  const filePath = hashToPath(hash);
   try {
-    const res  = await fetch(hashToPath(hash));
-    if (!res.ok) throw new Error(`${res.status}`);
+    const res  = await fetch(filePath);
+    if (!res.ok) throw new Error(`${res.status} — ${filePath}`);
     let raw = await res.text();
 
     // Strip YAML front matter
