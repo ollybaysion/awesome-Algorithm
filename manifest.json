@@ -153,7 +153,7 @@
       "title": "Graph",
       "icon": "🕸️",
       "description": "",
-      "color": "#dc2626",
+      "color": "#d97706",
       "chapters": [
         {
           "id": "01-shortest-path",
@@ -167,6 +167,272 @@
                 "shortest-path",
                 "priority-queue",
                 "greedy"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "08-stl-implementation",
+      "title": "Stl Implementation",
+      "icon": "📂",
+      "description": "",
+      "color": "#dc2626",
+      "chapters": [
+        {
+          "id": "01-basic",
+          "title": "Basic",
+          "topics": [
+            {
+              "id": "01-vector",
+              "title": "Vector (동적 배열) 구현",
+              "tags": [
+                "vector",
+                "dynamic-array",
+                "amortized",
+                "no-stl"
+              ]
+            },
+            {
+              "id": "02-stack-queue",
+              "title": "Stack / Queue / Deque 구현",
+              "tags": [
+                "stack",
+                "queue",
+                "deque",
+                "circular-buffer",
+                "no-stl"
+              ]
+            },
+            {
+              "id": "03-heap",
+              "title": "Heap (우선순위 큐) 구현",
+              "tags": [
+                "heap",
+                "priority-queue",
+                "min-heap",
+                "max-heap",
+                "no-stl"
+              ]
+            },
+            {
+              "id": "04-union-find",
+              "title": "Union-Find (Disjoint Set Union)",
+              "tags": [
+                "union-find",
+                "DSU",
+                "path-compression",
+                "union-by-rank",
+                "no-stl"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "02-advanced",
+          "title": "Advanced",
+          "topics": [
+            {
+              "id": "01-segment-tree",
+              "title": "세그먼트 트리 구현",
+              "tags": [
+                "segment-tree",
+                "range-query",
+                "point-update",
+                "no-stl"
+              ]
+            },
+            {
+              "id": "02-fenwick-tree",
+              "title": "펜윅 트리 (BIT) 구현",
+              "tags": [
+                "fenwick-tree",
+                "BIT",
+                "binary-indexed-tree",
+                "no-stl"
+              ]
+            },
+            {
+              "id": "03-trie",
+              "title": "트라이 (Trie) 구현",
+              "tags": [
+                "trie",
+                "prefix-tree",
+                "string",
+                "no-stl"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "09-platinum",
+      "title": "Platinum",
+      "icon": "📂",
+      "description": "",
+      "color": "#db2777",
+      "chapters": [
+        {
+          "id": "01-tree",
+          "title": "Tree",
+          "topics": [
+            {
+              "id": "01-lca",
+              "title": "LCA (최소 공통 조상)",
+              "tags": [
+                "LCA",
+                "sparse-table",
+                "binary-lifting",
+                "tree",
+                "platinum"
+              ]
+            },
+            {
+              "id": "02-hld",
+              "title": "Heavy-Light Decomposition (HLD)",
+              "tags": [
+                "HLD",
+                "heavy-light-decomposition",
+                "tree",
+                "segment-tree",
+                "platinum"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "02-segment-tree-advanced",
+          "title": "Segment Tree Advanced",
+          "topics": [
+            {
+              "id": "01-sparse-table",
+              "title": "Sparse Table (희소 테이블)",
+              "tags": [
+                "sparse-table",
+                "RMQ",
+                "range-minimum-query",
+                "O(1)-query",
+                "platinum"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "03-graph-advanced",
+          "title": "Graph Advanced",
+          "topics": [
+            {
+              "id": "01-scc",
+              "title": "강한 연결 요소 (SCC)",
+              "tags": [
+                "SCC",
+                "strongly-connected-components",
+                "Kosaraju",
+                "Tarjan",
+                "platinum"
+              ]
+            },
+            {
+              "id": "02-2sat",
+              "title": "2-SAT",
+              "tags": [
+                "2-SAT",
+                "SCC",
+                "implication-graph",
+                "platinum"
+              ]
+            },
+            {
+              "id": "03-network-flow",
+              "title": "네트워크 플로우 (최대 유량)",
+              "tags": [
+                "network-flow",
+                "max-flow",
+                "Dinic",
+                "Edmonds-Karp",
+                "platinum"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "04-string",
+          "title": "String",
+          "topics": [
+            {
+              "id": "01-aho-corasick",
+              "title": "아호-코라식 (Aho-Corasick)",
+              "tags": [
+                "aho-corasick",
+                "string-matching",
+                "trie",
+                "failure-function",
+                "platinum"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "10-diamond",
+      "title": "Diamond",
+      "icon": "📂",
+      "description": "",
+      "color": "#7c3aed",
+      "chapters": [
+        {
+          "id": "01-dp-optimization",
+          "title": "Dp Optimization",
+          "topics": [
+            {
+              "id": "01-convex-hull-trick",
+              "title": "Convex Hull Trick (CHT)",
+              "tags": [
+                "convex-hull-trick",
+                "CHT",
+                "DP-optimization",
+                "Li-Chao",
+                "diamond"
+              ]
+            },
+            {
+              "id": "02-divide-conquer-opt",
+              "title": "분할 정복 최적화 / Knuth 최적화",
+              "tags": [
+                "divide-conquer-optimization",
+                "Knuth-optimization",
+                "DP",
+                "diamond"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "02-string-advanced",
+          "title": "String Advanced",
+          "topics": [
+            {
+              "id": "01-suffix-array",
+              "title": "접미사 배열 (Suffix Array) + LCP",
+              "tags": [
+                "suffix-array",
+                "LCP",
+                "SA-IS",
+                "string",
+                "diamond"
+              ]
+            },
+            {
+              "id": "02-manacher",
+              "title": "Manacher 알고리즘",
+              "tags": [
+                "manacher",
+                "palindrome",
+                "string",
+                "diamond"
               ]
             }
           ]
