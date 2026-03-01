@@ -1,0 +1,179 @@
+{
+  "subjects": [
+    {
+      "id": "01-data-structures",
+      "title": "자료구조",
+      "icon": "🗂️",
+      "description": "배열, 연결 리스트, 스택, 큐, 트리, 그래프, 힙, 해시 테이블",
+      "color": "#7c3aed",
+      "chapters": [
+        {
+          "id": "01-linear",
+          "title": "선형 자료구조",
+          "topics": [
+            { "id": "01-array",       "title": "배열 (Array)",          "tags": ["array", "index"] },
+            { "id": "02-linked-list", "title": "연결 리스트 (Linked List)", "tags": ["linked-list", "pointer"] },
+            { "id": "03-stack",       "title": "스택 (Stack)",           "tags": ["stack", "LIFO"] },
+            { "id": "04-queue",       "title": "큐 (Queue)",             "tags": ["queue", "FIFO", "deque"] }
+          ]
+        },
+        {
+          "id": "02-nonlinear",
+          "title": "비선형 자료구조",
+          "topics": [
+            { "id": "01-tree",      "title": "트리 (Tree)",          "tags": ["tree", "binary-tree", "BST"] },
+            { "id": "02-heap",      "title": "힙 (Heap)",            "tags": ["heap", "priority-queue"] },
+            { "id": "03-graph",     "title": "그래프 (Graph)",       "tags": ["graph", "vertex", "edge"] },
+            { "id": "04-hash-table","title": "해시 테이블 (Hash Table)", "tags": ["hash", "collision"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02-sorting",
+      "title": "정렬 알고리즘",
+      "icon": "🔢",
+      "description": "버블, 선택, 삽입, 합병, 퀵, 힙 정렬 등 핵심 정렬 기법",
+      "color": "#2563eb",
+      "chapters": [
+        {
+          "id": "01-comparison",
+          "title": "비교 기반 정렬",
+          "topics": [
+            { "id": "01-bubble",    "title": "버블 정렬 (Bubble Sort)",     "tags": ["bubble", "O(n^2)"] },
+            { "id": "02-selection", "title": "선택 정렬 (Selection Sort)",  "tags": ["selection", "O(n^2)"] },
+            { "id": "03-insertion", "title": "삽입 정렬 (Insertion Sort)",  "tags": ["insertion", "O(n^2)"] },
+            { "id": "04-merge",     "title": "합병 정렬 (Merge Sort)",      "tags": ["merge", "divide-conquer", "O(nlogn)"] },
+            { "id": "05-quick",     "title": "퀵 정렬 (Quick Sort)",        "tags": ["quick", "pivot", "O(nlogn)"] },
+            { "id": "06-heap",      "title": "힙 정렬 (Heap Sort)",         "tags": ["heap", "O(nlogn)"] }
+          ]
+        },
+        {
+          "id": "02-non-comparison",
+          "title": "비교 불필요 정렬",
+          "topics": [
+            { "id": "01-counting",  "title": "계수 정렬 (Counting Sort)", "tags": ["counting", "O(n+k)"] },
+            { "id": "02-radix",     "title": "기수 정렬 (Radix Sort)",    "tags": ["radix", "digit"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "03-searching",
+      "title": "탐색 알고리즘",
+      "icon": "🔍",
+      "description": "이진 탐색, BFS, DFS를 이용한 효율적인 데이터 탐색",
+      "color": "#0891b2",
+      "chapters": [
+        {
+          "id": "01-basic",
+          "title": "기본 탐색",
+          "topics": [
+            { "id": "01-linear-search", "title": "선형 탐색 (Linear Search)",    "tags": ["linear", "O(n)"] },
+            { "id": "02-binary-search", "title": "이진 탐색 (Binary Search)",    "tags": ["binary", "O(logn)", "sorted"] },
+            { "id": "03-ternary-search","title": "삼분 탐색 (Ternary Search)",   "tags": ["ternary", "unimodal"] }
+          ]
+        },
+        {
+          "id": "02-graph-traversal",
+          "title": "그래프 탐색",
+          "topics": [
+            { "id": "01-bfs", "title": "너비 우선 탐색 (BFS)", "tags": ["BFS", "queue", "shortest-path"] },
+            { "id": "02-dfs", "title": "깊이 우선 탐색 (DFS)", "tags": ["DFS", "stack", "recursion"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "04-dynamic-programming",
+      "title": "동적 프로그래밍",
+      "icon": "📐",
+      "description": "메모이제이션과 타뷸레이션으로 중복 계산을 제거하는 DP",
+      "color": "#059669",
+      "chapters": [
+        {
+          "id": "01-basics",
+          "title": "DP 기초",
+          "topics": [
+            { "id": "01-intro",       "title": "DP 개념과 접근법",            "tags": ["memoization", "tabulation"] },
+            { "id": "02-fibonacci",   "title": "피보나치와 메모이제이션",      "tags": ["fibonacci", "top-down"] },
+            { "id": "03-knapsack",    "title": "배낭 문제 (Knapsack)",        "tags": ["knapsack", "0-1"] },
+            { "id": "04-lcs",         "title": "최장 공통 부분수열 (LCS)",     "tags": ["LCS", "string-DP"] }
+          ]
+        },
+        {
+          "id": "02-advanced",
+          "title": "DP 심화",
+          "topics": [
+            { "id": "01-lis",         "title": "최장 증가 부분수열 (LIS)",     "tags": ["LIS", "O(nlogn)"] },
+            { "id": "02-matrix-chain", "title": "행렬 연쇄 곱셈",             "tags": ["matrix", "interval-DP"] },
+            { "id": "03-bitmask-dp",  "title": "비트마스크 DP",               "tags": ["bitmask", "TSP"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "05-greedy",
+      "title": "그리디 알고리즘",
+      "icon": "💡",
+      "description": "매 단계 최선의 선택으로 전체 최적해를 찾는 그리디 전략",
+      "color": "#d97706",
+      "chapters": [
+        {
+          "id": "01-basics",
+          "title": "그리디 기초",
+          "topics": [
+            { "id": "01-intro",       "title": "그리디 개념과 증명",       "tags": ["greedy", "exchange-argument"] },
+            { "id": "02-activity",    "title": "활동 선택 문제",           "tags": ["activity-selection", "interval"] },
+            { "id": "03-huffman",     "title": "허프만 코딩",              "tags": ["huffman", "compression"] },
+            { "id": "04-coin",        "title": "동전 거스름돈 문제",        "tags": ["coin-change", "greedy"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "06-graph",
+      "title": "그래프 알고리즘",
+      "icon": "🕸️",
+      "description": "최단 경로, 최소 신장 트리, 위상 정렬 등 그래프 핵심 알고리즘",
+      "color": "#dc2626",
+      "chapters": [
+        {
+          "id": "01-shortest-path",
+          "title": "최단 경로",
+          "topics": [
+            { "id": "01-dijkstra",      "title": "다익스트라 (Dijkstra)",        "tags": ["dijkstra", "O(ElogV)"] },
+            { "id": "02-bellman-ford",  "title": "벨만-포드 (Bellman-Ford)",     "tags": ["bellman-ford", "negative-edge"] },
+            { "id": "03-floyd-warshall","title": "플로이드-워셜 (Floyd-Warshall)","tags": ["floyd-warshall", "all-pairs"] }
+          ]
+        },
+        {
+          "id": "02-mst",
+          "title": "최소 신장 트리",
+          "topics": [
+            { "id": "01-kruskal",  "title": "크루스칼 (Kruskal)",   "tags": ["kruskal", "union-find"] },
+            { "id": "02-prim",     "title": "프림 (Prim)",          "tags": ["prim", "greedy"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "07-string",
+      "title": "문자열 알고리즘",
+      "icon": "🔤",
+      "description": "KMP, 라빈-카프 등 효율적인 문자열 패턴 매칭 알고리즘",
+      "color": "#db2777",
+      "chapters": [
+        {
+          "id": "01-pattern-matching",
+          "title": "패턴 매칭",
+          "topics": [
+            { "id": "01-naive",       "title": "단순 패턴 매칭",          "tags": ["brute-force", "O(nm)"] },
+            { "id": "02-kmp",         "title": "KMP 알고리즘",            "tags": ["KMP", "failure-function"] },
+            { "id": "03-rabin-karp",  "title": "라빈-카프 알고리즘",      "tags": ["rabin-karp", "hashing"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

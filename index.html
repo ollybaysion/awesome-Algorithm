@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithm 학습 대시보드</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">&#9776;</button>
+    <a href="#" class="site-title">Algorithm 학습 대시보드</a>
+    <div class="header-center">
+      <div class="global-progress-wrap">
+        <div class="global-progress-bar" id="globalProgressBar"></div>
+      </div>
+      <span class="global-progress-text" id="globalProgressText">0%</span>
+    </div>
+    <div class="header-right">
+      <input type="text" id="searchInput" class="search-input" placeholder="토픽 검색..." />
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="sidebar-pinned">
+        <a href="#guide/how-to-add" class="sidebar-pinned-link">📌 토픽 추가 가이드</a>
+      </div>
+
+      <div class="sidebar-section" id="nav-exam">
+        <button class="sidebar-section-title" data-target="nav-exam-list">
+          <span class="section-icon">📋</span> 알고리즘 정보
+          <span class="toggle-arrow">▾</span>
+        </button>
+        <ul class="sidebar-section-list open" id="nav-exam-list">
+          <li><a href="#exam/overview" class="nav-item" data-hash="exam/overview">시험 개요</a></li>
+          <li><a href="#exam/complexity" class="nav-item" data-hash="exam/complexity">복잡도 기준</a></li>
+        </ul>
+      </div>
+
+      <div id="sidebar-subjects"></div>
+
+    </div>
+  </nav>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="mainContent">
+
+    <!-- HOME SCREEN -->
+    <div id="homeScreen" class="home-screen">
+      <div class="home-badge">🧠 Algorithm</div>
+      <h1 class="home-title">알고리즘 학습 대시보드</h1>
+      <p class="home-desc">자료구조, 정렬, 탐색, DP, 그래프 등 핵심 알고리즘을 체계적으로 학습하세요.</p>
+      <div class="home-stats" id="homeStats"></div>
+      <div class="subject-cards" id="subjectCards"></div>
+    </div>
+
+    <!-- CONTENT VIEWER -->
+    <div id="contentViewer" class="content-viewer hidden">
+      <nav class="breadcrumb" id="breadcrumb"></nav>
+      <article class="markdown-body" id="markdownBody"></article>
+      <div class="content-footer">
+        <button class="complete-btn" id="completeBtn">✅ 학습 완료</button>
+        <div class="nav-buttons">
+          <button class="nav-btn" id="prevBtn">← 이전</button>
+          <button class="nav-btn" id="nextBtn">다음 →</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
