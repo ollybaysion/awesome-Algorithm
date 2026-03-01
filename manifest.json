@@ -438,6 +438,90 @@
           ]
         }
       ]
+    },
+    {
+      "id": "11-boj",
+      "title": "Boj",
+      "icon": "📂",
+      "description": "",
+      "color": "#2563eb",
+      "chapters": [
+        {
+          "id": "01-data-structures",
+          "title": "Data Structures",
+          "topics": [
+            {
+              "id": "01-boj-1927-min-heap",
+              "title": "BOJ 1927 - 최소 힙",
+              "tags": [
+                "boj",
+                "data-structure",
+                "heap",
+                "silver2"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "02-graph",
+          "title": "Graph",
+          "topics": [
+            {
+              "id": "01-boj-1260-dfs-bfs",
+              "title": "BOJ 1260 - DFS와 BFS",
+              "tags": [
+                "boj",
+                "graph",
+                "dfs",
+                "bfs",
+                "silver2"
+              ]
+            },
+            {
+              "id": "02-boj-1753-dijkstra",
+              "title": "BOJ 1753 - 최단경로",
+              "tags": [
+                "boj",
+                "graph",
+                "dijkstra",
+                "gold4"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "03-dp",
+          "title": "Dp",
+          "topics": [
+            {
+              "id": "01-boj-9251-lcs",
+              "title": "BOJ 9251 - LCS",
+              "tags": [
+                "boj",
+                "dp",
+                "lcs",
+                "gold5"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "05-tree",
+          "title": "Tree",
+          "topics": [
+            {
+              "id": "01-boj-11437-lca",
+              "title": "BOJ 11437 - LCA",
+              "tags": [
+                "boj",
+                "tree",
+                "lca",
+                "gold3"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
