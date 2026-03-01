@@ -153,7 +153,7 @@
       "title": "Graph",
       "icon": "🕸️",
       "description": "",
-      "color": "#d97706",
+      "color": "#dc2626",
       "chapters": [
         {
           "id": "01-shortest-path",
