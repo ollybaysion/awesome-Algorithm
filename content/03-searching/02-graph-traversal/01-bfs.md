@@ -33,34 +33,56 @@ V = 정점(Vertex) 수, E = 간선(Edge) 수
 
 ---
 
-## 구현 (Python)
+## 구현 (C++)
 
-```python
-from collections import deque
+```cpp
+#include <cstdio>
+#include <cstring>
 
-def bfs(graph, start):
-    visited = {start}
-    queue = deque([start])
-    order = []
+const int MAXV = 1005;
+const int MAXE = 10005;
 
-    while queue:
-        node = queue.popleft()
-        order.append(node)
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
-    return order
+int head[MAXV], nxt[MAXE], to[MAXE], ecnt;
+bool visited[MAXV];
 
-graph = {
-    0: [1, 2],
-    1: [0, 3, 4],
-    2: [0, 5],
-    3: [1],
-    4: [1],
-    5: [2]
+void addEdge(int u, int v) {
+    to[++ecnt] = v; nxt[ecnt] = head[u]; head[u] = ecnt;
 }
-print(bfs(graph, 0))  # [0, 1, 2, 3, 4, 5]
+
+int order[MAXV], orderCnt;
+
+void bfs(int start) {
+    int q[MAXV], front = 0, back = 0;
+    memset(visited, false, sizeof(visited));
+    visited[start] = true;
+    q[back++] = start;
+    orderCnt = 0;
+
+    while (front < back) {
+        int u = q[front++];
+        order[orderCnt++] = u;
+        for (int e = head[u]; e; e = nxt[e]) {
+            if (!visited[to[e]]) {
+                visited[to[e]] = true;
+                q[back++] = to[e];
+            }
+        }
+    }
+}
+
+int main() {
+    // 그래프: 0-1, 0-2, 1-3, 1-4, 2-5
+    addEdge(0, 1); addEdge(0, 2);
+    addEdge(1, 0); addEdge(1, 3); addEdge(1, 4);
+    addEdge(2, 0); addEdge(2, 5);
+    addEdge(3, 1); addEdge(4, 1); addEdge(5, 2);
+
+    bfs(0);
+    for (int i = 0; i < orderCnt; i++)
+        printf("%d ", order[i]);  // 0 1 2 3 4 5
+    printf("\n");
+    return 0;
+}
 ```
 
 ---
@@ -69,22 +91,38 @@ print(bfs(graph, 0))  # [0, 1, 2, 3, 4, 5]
 
 BFS는 **가중치 없는 그래프에서 최단 경로**를 찾을 수 있습니다.
 
-```python
-def bfs_shortest(graph, start, end):
-    visited = {start}
-    queue = deque([(start, 0)])   # (노드, 거리)
+```cpp
+#include <cstdio>
+#include <cstring>
 
-    while queue:
-        node, dist = queue.popleft()
-        if node == end:
-            return dist
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append((neighbor, dist + 1))
-    return -1  # 도달 불가
+const int MAXV = 1005;
+const int MAXE = 10005;
 
-print(bfs_shortest(graph, 0, 5))  # 2
+int head[MAXV], nxt[MAXE], to[MAXE], ecnt;
+int dist[MAXV];
+
+void addEdge(int u, int v) {
+    to[++ecnt] = v; nxt[ecnt] = head[u]; head[u] = ecnt;
+}
+
+int bfsShortest(int start, int end, int V) {
+    memset(dist, -1, sizeof(int) * (V + 1));
+    int q[MAXV], front = 0, back = 0;
+    dist[start] = 0;
+    q[back++] = start;
+
+    while (front < back) {
+        int u = q[front++];
+        if (u == end) return dist[u];
+        for (int e = head[u]; e; e = nxt[e]) {
+            if (dist[to[e]] == -1) {
+                dist[to[e]] = dist[u] + 1;
+                q[back++] = to[e];
+            }
+        }
+    }
+    return -1;  // 도달 불가
+}
 ```
 
 ---
@@ -93,24 +131,43 @@ print(bfs_shortest(graph, 0, 5))  # 2
 
 코딩 테스트에서 가장 흔한 BFS 유형입니다.
 
-```python
-from collections import deque
+```cpp
+#include <cstdio>
+#include <cstring>
 
-def bfs_grid(grid, sr, sc):
-    rows, cols = len(grid), len(grid[0])
-    visited = [[False]*cols for _ in range(rows)]
-    queue = deque([(sr, sc, 0)])
-    visited[sr][sc] = True
-    dirs = [(0,1),(0,-1),(1,0),(-1,0)]
+const int MAXR = 1005;
+const int MAXC = 1005;
 
-    while queue:
-        r, c, dist = queue.popleft()
-        for dr, dc in dirs:
-            nr, nc = r + dr, c + dc
-            if 0 <= nr < rows and 0 <= nc < cols \
-               and not visited[nr][nc] and grid[nr][nc] != '#':
-                visited[nr][nc] = True
-                queue.append((nr, nc, dist + 1))
+char grid[MAXR][MAXC];
+int  dist[MAXR][MAXC];
+int  rows, cols;
+
+int dx[] = {0, 0, 1, -1};
+int dy[] = {1, -1, 0, 0};
+
+struct Pos { int r, c; };
+
+void bfsGrid(int sr, int sc) {
+    Pos q[MAXR * MAXC];
+    int front = 0, back = 0;
+
+    memset(dist, -1, sizeof(dist));
+    dist[sr][sc] = 0;
+    q[back++] = {sr, sc};
+
+    while (front < back) {
+        Pos cur = q[front++];
+        for (int d = 0; d < 4; d++) {
+            int nr = cur.r + dx[d];
+            int nc = cur.c + dy[d];
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols
+                && dist[nr][nc] == -1 && grid[nr][nc] != '#') {
+                dist[nr][nc] = dist[cur.r][cur.c] + 1;
+                q[back++] = {nr, nc};
+            }
+        }
+    }
+}
 ```
 
 ---
@@ -120,7 +177,7 @@ def bfs_grid(grid, sr, sc):
 | 항목 | BFS | DFS |
 |------|-----|-----|
 | 자료구조 | 큐 | 스택/재귀 |
-| 최단 경로 | ✅ | ❌ (가중치 없을 때만 보장 X) |
+| 최단 경로 | O (가중치 동일) | X |
 | 메모리 | 많음 | 적음 |
 | 적합한 문제 | 최단 거리, 레벨 순회 | 사이클 감지, 위상 정렬, 백트래킹 |
 

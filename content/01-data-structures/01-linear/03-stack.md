@@ -27,35 +27,39 @@ pop() → 3,  pop() → 2,  pop() → 1
 
 ---
 
-## 구현 (Python)
+## 구현 (C++)
 
-Python의 `list`는 스택으로 바로 사용 가능합니다.
+```cpp
+#include <cstdio>
 
-```python
-stack = []
+const int MAXN = 100005;
 
-stack.append(1)   # push
-stack.append(2)
-stack.append(3)
+struct Stack {
+    int data[MAXN];
+    int sz;
 
-print(stack[-1])  # peek → 3
-stack.pop()       # pop  → 3
+    void init()       { sz = 0; }
+    void push(int x)  { data[sz++] = x; }
+    int  pop()        { return data[--sz]; }
+    int  top()        { return data[sz - 1]; }
+    bool empty()      { return sz == 0; }
+    int  size()       { return sz; }
+};
 
-print(stack)      # [1, 2]
-```
+int main() {
+    Stack st;
+    st.init();
 
-### 직접 구현
+    st.push(1);
+    st.push(2);
+    st.push(3);
 
-```python
-class Stack:
-    def __init__(self):
-        self._data = []
+    printf("%d\n", st.top());  // peek → 3
+    st.pop();                  // pop  → 3
 
-    def push(self, val): self._data.append(val)
-    def pop(self):       return self._data.pop()
-    def peek(self):      return self._data[-1]
-    def is_empty(self):  return len(self._data) == 0
-    def size(self):      return len(self._data)
+    printf("size = %d\n", st.size());  // 2
+    return 0;
+}
 ```
 
 ---
@@ -64,57 +68,106 @@ class Stack:
 
 ### 괄호 유효성 검사
 
-```python
-def is_valid(s):
-    stack = []
-    mapping = {')': '(', ']': '[', '}': '{'}
-    for c in s:
-        if c in mapping:
-            top = stack.pop() if stack else '#'
-            if mapping[c] != top:
-                return False
-        else:
-            stack.append(c)
-    return not stack
+```cpp
+#include <cstdio>
+#include <cstring>
 
-print(is_valid("()[]{}"))   # True
-print(is_valid("([)]"))     # False
+bool isValid(const char* s) {
+    char stack[10005];
+    int top = 0;
+    int len = strlen(s);
+
+    for (int i = 0; i < len; i++) {
+        char c = s[i];
+        if (c == '(' || c == '[' || c == '{') {
+            stack[top++] = c;
+        } else {
+            if (top == 0) return false;
+            char t = stack[--top];
+            if ((c == ')' && t != '(') ||
+                (c == ']' && t != '[') ||
+                (c == '}' && t != '{'))
+                return false;
+        }
+    }
+    return top == 0;
+}
+
+int main() {
+    printf("%d\n", isValid("()[]{}"));  // 1 (true)
+    printf("%d\n", isValid("([)]"));    // 0 (false)
+    return 0;
+}
 ```
 
 ### 후위 표기식 계산
 
-```python
-def eval_postfix(expr):
-    stack = []
-    for token in expr.split():
-        if token.lstrip('-').isdigit():
-            stack.append(int(token))
-        else:
-            b, a = stack.pop(), stack.pop()
-            if   token == '+': stack.append(a + b)
-            elif token == '-': stack.append(a - b)
-            elif token == '*': stack.append(a * b)
-            elif token == '/': stack.append(int(a / b))
-    return stack[0]
+```cpp
+#include <cstdio>
+#include <cstring>
 
-print(eval_postfix("3 4 + 2 *"))   # 14
+int evalPostfix(const char* expr) {
+    int stack[1005];
+    int top = 0;
+    int len = strlen(expr);
+    int i = 0;
+
+    while (i < len) {
+        if (expr[i] == ' ') { i++; continue; }
+
+        if ((expr[i] >= '0' && expr[i] <= '9') ||
+            (expr[i] == '-' && i + 1 < len && expr[i+1] >= '0' && expr[i+1] <= '9')) {
+            int sign = 1, num = 0;
+            if (expr[i] == '-') { sign = -1; i++; }
+            while (i < len && expr[i] >= '0' && expr[i] <= '9')
+                num = num * 10 + (expr[i++] - '0');
+            stack[top++] = sign * num;
+        } else {
+            int b = stack[--top], a = stack[--top];
+            if (expr[i] == '+') stack[top++] = a + b;
+            else if (expr[i] == '-') stack[top++] = a - b;
+            else if (expr[i] == '*') stack[top++] = a * b;
+            else if (expr[i] == '/') stack[top++] = a / b;
+            i++;
+        }
+    }
+    return stack[0];
+}
+
+int main() {
+    printf("%d\n", evalPostfix("3 4 + 2 *"));  // 14
+    return 0;
+}
 ```
 
 ### 단조 스택 (Monotonic Stack)
 
-```python
-def next_greater(arr):
-    """각 원소의 오른쪽 첫 번째 더 큰 값"""
-    n = len(arr)
-    result = [-1] * n
-    stack = []  # 인덱스 저장
-    for i in range(n):
-        while stack and arr[stack[-1]] < arr[i]:
-            result[stack.pop()] = arr[i]
-        stack.append(i)
-    return result
+```cpp
+#include <cstdio>
 
-print(next_greater([2, 1, 2, 4, 3]))  # [4, 2, 4, -1, -1]
+// 각 원소의 오른쪽 첫 번째 더 큰 값
+void nextGreater(int arr[], int n, int result[]) {
+    int stack[100005];  // 인덱스 저장
+    int top = 0;
+
+    for (int i = 0; i < n; i++) result[i] = -1;
+
+    for (int i = 0; i < n; i++) {
+        while (top > 0 && arr[stack[top - 1]] < arr[i])
+            result[stack[--top]] = arr[i];
+        stack[top++] = i;
+    }
+}
+
+int main() {
+    int arr[] = {2, 1, 2, 4, 3};
+    int res[5];
+    nextGreater(arr, 5, res);
+    for (int i = 0; i < 5; i++)
+        printf("%d ", res[i]);  // 4 2 4 -1 -1
+    printf("\n");
+    return 0;
+}
 ```
 
 ---

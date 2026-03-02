@@ -20,124 +20,182 @@ tags: [DFS, stack, recursion, backtracking]
 
 ---
 
-## 구현 (Python)
+## 구현 (C++)
 
 ### 재귀 방식
 
-```python
-def dfs_recursive(graph, node, visited=None):
-    if visited is None:
-        visited = set()
-    visited.add(node)
-    print(node, end=' ')
-    for neighbor in graph[node]:
-        if neighbor not in visited:
-            dfs_recursive(graph, neighbor, visited)
-    return visited
+```cpp
+#include <cstdio>
+#include <cstring>
 
-graph = {0:[1,2], 1:[0,3,4], 2:[0,5], 3:[1], 4:[1], 5:[2]}
-dfs_recursive(graph, 0)  # 0 1 3 4 2 5
+const int MAXV = 1005;
+const int MAXE = 10005;
+
+int head[MAXV], nxt[MAXE], to[MAXE], ecnt;
+bool visited[MAXV];
+
+void addEdge(int u, int v) {
+    to[++ecnt] = v; nxt[ecnt] = head[u]; head[u] = ecnt;
+}
+
+void dfs(int u) {
+    visited[u] = true;
+    printf("%d ", u);
+    for (int e = head[u]; e; e = nxt[e]) {
+        if (!visited[to[e]])
+            dfs(to[e]);
+    }
+}
+
+int main() {
+    // 그래프: 0-1, 0-2, 1-3, 1-4, 2-5
+    addEdge(0, 1); addEdge(0, 2);
+    addEdge(1, 0); addEdge(1, 3); addEdge(1, 4);
+    addEdge(2, 0); addEdge(2, 5);
+    addEdge(3, 1); addEdge(4, 1); addEdge(5, 2);
+
+    memset(visited, false, sizeof(visited));
+    dfs(0);  // 0 2 5 1 4 3 (인접 리스트 순서에 따라 다름)
+    printf("\n");
+    return 0;
+}
 ```
 
 ### 반복(스택) 방식
 
-```python
-def dfs_iterative(graph, start):
-    visited = set()
-    stack = [start]
-    order = []
+```cpp
+void dfsIterative(int start, int V) {
+    int stack[MAXV], top = 0;
+    memset(visited, false, sizeof(bool) * (V + 1));
+    stack[top++] = start;
 
-    while stack:
-        node = stack.pop()
-        if node not in visited:
-            visited.add(node)
-            order.append(node)
-            for neighbor in reversed(graph[node]):
-                if neighbor not in visited:
-                    stack.append(neighbor)
-    return order
+    while (top > 0) {
+        int u = stack[--top];
+        if (visited[u]) continue;
+        visited[u] = true;
+        printf("%d ", u);
+        for (int e = head[u]; e; e = nxt[e]) {
+            if (!visited[to[e]])
+                stack[top++] = to[e];
+        }
+    }
+}
 ```
 
 ---
 
 ## 활용: 연결 요소 (Connected Components)
 
-```python
-def count_components(n, edges):
-    graph = {i: [] for i in range(n)}
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
+```cpp
+#include <cstdio>
+#include <cstring>
 
-    visited = set()
-    count = 0
+const int MAXV = 1005;
+const int MAXE = 10005;
 
-    def dfs(node):
-        visited.add(node)
-        for nb in graph[node]:
-            if nb not in visited:
-                dfs(nb)
+int head[MAXV], nxt[MAXE], to[MAXE], ecnt;
+bool visited[MAXV];
 
-    for i in range(n):
-        if i not in visited:
-            dfs(i)
-            count += 1
-    return count
+void addEdge(int u, int v) {
+    to[++ecnt] = v; nxt[ecnt] = head[u]; head[u] = ecnt;
+}
 
-print(count_components(5, [[0,1],[1,2],[3,4]]))  # 2
+void dfs(int u) {
+    visited[u] = true;
+    for (int e = head[u]; e; e = nxt[e])
+        if (!visited[to[e]])
+            dfs(to[e]);
+}
+
+int countComponents(int n) {
+    memset(visited, false, sizeof(bool) * (n + 1));
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            dfs(i);
+            count++;
+        }
+    }
+    return count;
+}
 ```
 
 ---
 
 ## 활용: 위상 정렬 (Topological Sort)
 
-```python
-from collections import defaultdict
+```cpp
+#include <cstdio>
+#include <cstring>
 
-def topological_sort(n, edges):
-    graph = defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
+const int MAXV = 1005;
+const int MAXE = 10005;
 
-    visited = set()
-    result = []
+int head[MAXV], nxt[MAXE], to[MAXE], ecnt;
+bool visited[MAXV];
+int result[MAXV], resCnt;
 
-    def dfs(node):
-        visited.add(node)
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                dfs(neighbor)
-        result.append(node)   # 후위 순서로 추가
+void addEdge(int u, int v) {
+    to[++ecnt] = v; nxt[ecnt] = head[u]; head[u] = ecnt;
+}
 
-    for i in range(n):
-        if i not in visited:
-            dfs(i)
+void dfsTopoSort(int u) {
+    visited[u] = true;
+    for (int e = head[u]; e; e = nxt[e])
+        if (!visited[to[e]])
+            dfsTopoSort(to[e]);
+    result[resCnt++] = u;  // 후위 순서로 추가
+}
 
-    return result[::-1]
+void topologicalSort(int n) {
+    memset(visited, false, sizeof(bool) * n);
+    resCnt = 0;
+    for (int i = 0; i < n; i++)
+        if (!visited[i])
+            dfsTopoSort(i);
 
-print(topological_sort(4, [[0,1],[0,2],[1,3],[2,3]]))
-# [0, 2, 1, 3] (여러 정답 가능)
+    // result를 뒤집으면 위상 정렬 순서
+    for (int i = resCnt - 1; i >= 0; i--)
+        printf("%d ", result[i]);
+    printf("\n");
+}
 ```
 
 ---
 
 ## 활용: 백트래킹 (Backtracking)
 
-```python
-def permutations(nums):
-    result = []
-    def backtrack(path, remaining):
-        if not remaining:
-            result.append(path[:])
-            return
-        for i, num in enumerate(remaining):
-            path.append(num)
-            backtrack(path, remaining[:i] + remaining[i+1:])
-            path.pop()  # 되돌리기
-    backtrack([], nums)
-    return result
+```cpp
+#include <cstdio>
 
-print(permutations([1,2,3]))
+const int MAXN = 10;
+int perm[MAXN];
+bool used[MAXN];
+int N;
+
+void backtrack(int depth) {
+    if (depth == N) {
+        for (int i = 0; i < N; i++)
+            printf("%d ", perm[i]);
+        printf("\n");
+        return;
+    }
+    for (int i = 1; i <= N; i++) {
+        if (!used[i]) {
+            used[i] = true;
+            perm[depth] = i;
+            backtrack(depth + 1);
+            used[i] = false;  // 되돌리기
+        }
+    }
+}
+
+int main() {
+    N = 3;
+    backtrack(0);
+    // 1 2 3 / 1 3 2 / 2 1 3 / 2 3 1 / 3 1 2 / 3 2 1
+    return 0;
+}
 ```
 
 ---

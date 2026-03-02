@@ -10,7 +10,7 @@ tags: [linked-list, pointer, node]
 **노드(Node)**들이 포인터로 연결된 자료구조입니다. 각 노드는 **데이터 + 다음 노드 포인터**로 구성됩니다.
 
 ```
-[data|next] → [data|next] → [data|next] → None
+[data|next] → [data|next] → [data|next] → NULL
 ```
 
 | 종류 | 설명 |
@@ -34,63 +34,82 @@ tags: [linked-list, pointer, node]
 
 ---
 
-## 구현 (Python)
+## 구현 (C++ — 배열 기반)
 
-```python
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
+메모리 풀(배열)로 구현하면 동적 할당 없이도 연결 리스트를 사용할 수 있습니다.
 
-class LinkedList:
-    def __init__(self):
-        self.head = None
+```cpp
+#include <cstdio>
 
-    def append(self, data):
-        new_node = Node(data)
-        if not self.head:
-            self.head = new_node
-            return
-        cur = self.head
-        while cur.next:
-            cur = cur.next
-        cur.next = new_node
+const int MAXN = 100005;
 
-    def prepend(self, data):
-        new_node = Node(data)
-        new_node.next = self.head
-        self.head = new_node
+struct Node {
+    int data;
+    int next;  // 다음 노드의 인덱스 (-1이면 끝)
+} pool[MAXN];
 
-    def delete(self, data):
-        if not self.head:
-            return
-        if self.head.data == data:
-            self.head = self.head.next
-            return
-        cur = self.head
-        while cur.next:
-            if cur.next.data == data:
-                cur.next = cur.next.next
-                return
-            cur = cur.next
+int head = -1;
+int poolCnt = 0;
 
-    def display(self):
-        result = []
-        cur = self.head
-        while cur:
-            result.append(str(cur.data))
-            cur = cur.next
-        print(" → ".join(result))
+int newNode(int data) {
+    pool[poolCnt].data = data;
+    pool[poolCnt].next = -1;
+    return poolCnt++;
+}
 
-# 사용 예시
-ll = LinkedList()
-ll.append(1)
-ll.append(2)
-ll.append(3)
-ll.prepend(0)
-ll.display()   # 0 → 1 → 2 → 3
-ll.delete(2)
-ll.display()   # 0 → 1 → 3
+// 맨 앞에 삽입 → O(1)
+void prepend(int data) {
+    int nd = newNode(data);
+    pool[nd].next = head;
+    head = nd;
+}
+
+// 맨 뒤에 삽입 → O(n)
+void append(int data) {
+    int nd = newNode(data);
+    if (head == -1) { head = nd; return; }
+    int cur = head;
+    while (pool[cur].next != -1)
+        cur = pool[cur].next;
+    pool[cur].next = nd;
+}
+
+// 값으로 삭제 → O(n)
+void deleteNode(int data) {
+    if (head == -1) return;
+    if (pool[head].data == data) {
+        head = pool[head].next;
+        return;
+    }
+    int cur = head;
+    while (pool[cur].next != -1) {
+        if (pool[pool[cur].next].data == data) {
+            pool[cur].next = pool[pool[cur].next].next;
+            return;
+        }
+        cur = pool[cur].next;
+    }
+}
+
+// 출력
+void display() {
+    int cur = head;
+    while (cur != -1) {
+        printf("%d", pool[cur].data);
+        cur = pool[cur].next;
+        if (cur != -1) printf(" -> ");
+    }
+    printf("\n");
+}
+
+int main() {
+    append(1); append(2); append(3);
+    prepend(0);
+    display();       // 0 -> 1 -> 2 -> 3
+    deleteNode(2);
+    display();       // 0 -> 1 -> 3
+    return 0;
+}
 ```
 
 ---
@@ -99,29 +118,40 @@ ll.display()   # 0 → 1 → 3
 
 ### 연결 리스트 뒤집기
 
-```python
-def reverse(head):
-    prev = None
-    cur = head
-    while cur:
-        next_node = cur.next
-        cur.next = prev
-        prev = cur
-        cur = next_node
-    return prev
+```cpp
+void reverse() {
+    int prev = -1, cur = head;
+    while (cur != -1) {
+        int next = pool[cur].next;
+        pool[cur].next = prev;
+        prev = cur;
+        cur = next;
+    }
+    head = prev;
+}
 ```
 
 ### 사이클 감지 (Floyd's Algorithm)
 
-```python
-def has_cycle(head):
-    slow = fast = head
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-        if slow == fast:
-            return True
-    return False
+포인터 기반 연결 리스트에서 사이클을 O(1) 공간으로 감지합니다.
+
+```cpp
+struct PNode {
+    int data;
+    PNode* next;
+};
+
+bool hasCycle(PNode* head) {
+    PNode* slow = head;
+    PNode* fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast)
+            return true;
+    }
+    return false;
+}
 ```
 
 ---

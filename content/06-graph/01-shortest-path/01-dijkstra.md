@@ -31,111 +31,131 @@ tags: [dijkstra, shortest-path, priority-queue, greedy]
 
 ---
 
-## 구현 (Python — 우선순위 큐)
+## 구현 (C++ — 수동 최소 힙)
 
-```python
-import heapq
+```cpp
+#include <cstdio>
+#include <cstring>
 
-def dijkstra(graph, start):
-    """
-    graph: {node: [(cost, neighbor), ...]}
-    반환: 시작 노드에서 각 노드까지 최단 거리 딕셔너리
-    """
-    dist = {node: float('inf') for node in graph}
-    dist[start] = 0
-    heap = [(0, start)]   # (거리, 노드)
+const int MAXV = 20005;
+const int MAXE = 300005;
+const int INF  = 0x3f3f3f3f;
 
-    while heap:
-        cost, u = heapq.heappop(heap)
-        if cost > dist[u]:
-            continue   # 이미 처리된 노드
-        for weight, v in graph[u]:
-            new_cost = dist[u] + weight
-            if new_cost < dist[v]:
-                dist[v] = new_cost
-                heapq.heappush(heap, (new_cost, v))
-
-    return dist
-
-# 예시
-graph = {
-    'A': [(1,'B'), (4,'C')],
-    'B': [(1,'A'), (2,'C'), (5,'D')],
-    'C': [(4,'A'), (2,'B'), (1,'D')],
-    'D': [(5,'B'), (1,'C')]
+// ─── 인접 리스트 ───
+int head[MAXV], nxt[MAXE], to[MAXE], wt[MAXE], ecnt;
+void addEdge(int u, int v, int w) {
+    to[++ecnt] = v; wt[ecnt] = w;
+    nxt[ecnt] = head[u]; head[u] = ecnt;
 }
-print(dijkstra(graph, 'A'))
-# {'A': 0, 'B': 1, 'C': 3, 'D': 4}
+
+// ─── 최소 힙 ───
+struct Pair { int dist, v; };
+Pair heap[MAXE * 2];
+int  heapSz;
+
+void heapPush(int d, int v) {
+    heap[++heapSz] = {d, v};
+    int i = heapSz;
+    while (i > 1 && heap[i].dist < heap[i/2].dist) {
+        Pair tmp = heap[i]; heap[i] = heap[i/2]; heap[i/2] = tmp;
+        i /= 2;
+    }
+}
+
+Pair heapPop() {
+    Pair ret = heap[1];
+    heap[1] = heap[heapSz--];
+    int i = 1;
+    while (true) {
+        int c = i * 2;
+        if (c > heapSz) break;
+        if (c + 1 <= heapSz && heap[c+1].dist < heap[c].dist) c++;
+        if (heap[c].dist >= heap[i].dist) break;
+        Pair tmp = heap[i]; heap[i] = heap[c]; heap[c] = tmp;
+        i = c;
+    }
+    return ret;
+}
+
+// ─── 다익스트라 ───
+int dist[MAXV];
+
+void dijkstra(int src, int V) {
+    memset(dist, 0x3f, sizeof(int) * (V + 1));
+    dist[src] = 0;
+    heapSz = 0;
+    heapPush(0, src);
+
+    while (heapSz) {
+        Pair cur = heapPop();
+        if (cur.dist > dist[cur.v]) continue;  // lazy deletion
+        for (int e = head[cur.v]; e; e = nxt[e]) {
+            int nd = dist[cur.v] + wt[e];
+            if (nd < dist[to[e]]) {
+                dist[to[e]] = nd;
+                heapPush(nd, to[e]);
+            }
+        }
+    }
+}
+
+int main() {
+    int V, E, K;
+    scanf("%d %d", &V, &E);
+    scanf("%d", &K);
+    for (int i = 0; i < E; i++) {
+        int u, v, w;
+        scanf("%d %d %d", &u, &v, &w);
+        addEdge(u, v, w);
+    }
+
+    dijkstra(K, V);
+
+    for (int i = 1; i <= V; i++) {
+        if (dist[i] == INF) puts("INF");
+        else printf("%d\n", dist[i]);
+    }
+    return 0;
+}
 ```
 
 ---
 
 ## 경로 복원
 
-```python
-def dijkstra_with_path(graph, start, end):
-    dist = {node: float('inf') for node in graph}
-    dist[start] = 0
-    prev = {node: None for node in graph}
-    heap = [(0, start)]
+```cpp
+int prev[MAXV];
 
-    while heap:
-        cost, u = heapq.heappop(heap)
-        if cost > dist[u]:
-            continue
-        for weight, v in graph[u]:
-            new_cost = dist[u] + weight
-            if new_cost < dist[v]:
-                dist[v] = new_cost
-                prev[v] = u
-                heapq.heappush(heap, (new_cost, v))
+void dijkstraWithPath(int src, int V) {
+    memset(dist, 0x3f, sizeof(int) * (V + 1));
+    memset(prev, -1, sizeof(int) * (V + 1));
+    dist[src] = 0;
+    heapSz = 0;
+    heapPush(0, src);
 
-    # 경로 역추적
-    path = []
-    node = end
-    while node is not None:
-        path.append(node)
-        node = prev[node]
-    path.reverse()
-    return dist[end], path
+    while (heapSz) {
+        Pair cur = heapPop();
+        if (cur.dist > dist[cur.v]) continue;
+        for (int e = head[cur.v]; e; e = nxt[e]) {
+            int nd = dist[cur.v] + wt[e];
+            if (nd < dist[to[e]]) {
+                dist[to[e]] = nd;
+                prev[to[e]] = cur.v;
+                heapPush(nd, to[e]);
+            }
+        }
+    }
+}
 
-cost, path = dijkstra_with_path(graph, 'A', 'D')
-print(cost, path)  # 4 ['A', 'B', 'C', 'D']
-```
-
----
-
-## BOJ 스타일 입력 처리
-
-```python
-import sys, heapq
-input = sys.stdin.readline
-
-def solve():
-    V, E = map(int, input().split())
-    start = int(input())
-    graph = [[] for _ in range(V + 1)]
-
-    for _ in range(E):
-        u, v, w = map(int, input().split())
-        graph[u].append((w, v))
-
-    INF = float('inf')
-    dist = [INF] * (V + 1)
-    dist[start] = 0
-    heap = [(0, start)]
-
-    while heap:
-        cost, u = heapq.heappop(heap)
-        if cost > dist[u]:
-            continue
-        for w, v in graph[u]:
-            if dist[u] + w < dist[v]:
-                dist[v] = dist[u] + w
-                heapq.heappush(heap, (dist[v], v))
-
-    for i in range(1, V + 1):
-        print(dist[i] if dist[i] != INF else "INF")
+// 경로 역추적 (목적지 → 출발지 역순)
+void printPath(int end) {
+    int path[MAXV], cnt = 0;
+    for (int v = end; v != -1; v = prev[v])
+        path[cnt++] = v;
+    for (int i = cnt - 1; i >= 0; i--)
+        printf("%d ", path[i]);
+    printf("\n");
+}
 ```
 
 ---

@@ -23,37 +23,38 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!)
 
 ### O(1) — 상수 시간
 
-```python
-def get_first(arr):
-    return arr[0]  # 배열 크기와 무관하게 1번 연산
+```cpp
+int getFirst(int arr[]) {
+    return arr[0];  // 배열 크기와 무관하게 1번 연산
+}
 ```
 
 ### O(log n) — 로그 시간
 
-```python
-def binary_search(arr, target):
-    lo, hi = 0, len(arr) - 1
-    while lo <= hi:
-        mid = (lo + hi) // 2
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            lo = mid + 1
-        else:
-            hi = mid - 1
-    return -1
+```cpp
+int binarySearch(int arr[], int n, int target) {
+    int lo = 0, hi = n - 1;
+    while (lo <= hi) {
+        int mid = (lo + hi) / 2;
+        if (arr[mid] == target) return mid;
+        else if (arr[mid] < target) lo = mid + 1;
+        else hi = mid - 1;
+    }
+    return -1;
+}
 ```
 
 매 반복마다 탐색 범위가 절반으로 줄어듭니다.
 
 ### O(n) — 선형 시간
 
-```python
-def linear_search(arr, target):
-    for i, v in enumerate(arr):
-        if v == target:
-            return i
-    return -1
+```cpp
+int linearSearch(int arr[], int n, int target) {
+    for (int i = 0; i < n; i++)
+        if (arr[i] == target)
+            return i;
+    return -1;
+}
 ```
 
 ### O(n log n) — 선형 로그 시간
@@ -63,13 +64,16 @@ def linear_search(arr, target):
 
 ### O(n²) — 이차 시간
 
-```python
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(n - i - 1):  # 이중 루프 → O(n²)
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
+```cpp
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n - i - 1; j++)  // 이중 루프 → O(n²)
+            if (arr[j] > arr[j + 1]) {
+                int tmp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = tmp;
+            }
+}
 ```
 
 ---

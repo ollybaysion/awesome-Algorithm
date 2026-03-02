@@ -22,33 +22,46 @@ tags: [dynamic-programming, memoization, tabulation, optimal-substructure]
 
 재귀 호출 + 결과 캐시
 
-```python
-def fib_memo(n, memo={}):
-    if n in memo:
-        return memo[n]
-    if n <= 1:
-        return n
-    memo[n] = fib_memo(n-1, memo) + fib_memo(n-2, memo)
-    return memo[n]
+```cpp
+#include <cstdio>
+#include <cstring>
 
-print(fib_memo(10))  # 55
+const int MAXN = 105;
+long long memo[MAXN];
+
+long long fib(int n) {
+    if (n <= 1) return n;
+    if (memo[n] != -1) return memo[n];
+    return memo[n] = fib(n - 1) + fib(n - 2);
+}
+
+int main() {
+    memset(memo, -1, sizeof(memo));
+    printf("%lld\n", fib(10));  // 55
+    return 0;
+}
 ```
 
 ### Bottom-Up (타뷸레이션)
 
 작은 문제부터 반복문으로 채워 올라감
 
-```python
-def fib_tab(n):
-    if n <= 1:
-        return n
-    dp = [0] * (n + 1)
-    dp[1] = 1
-    for i in range(2, n + 1):
-        dp[i] = dp[i-1] + dp[i-2]
-    return dp[n]
+```cpp
+#include <cstdio>
 
-print(fib_tab(10))  # 55
+long long fib(int n) {
+    if (n <= 1) return n;
+    long long dp[105];
+    dp[0] = 0; dp[1] = 1;
+    for (int i = 2; i <= n; i++)
+        dp[i] = dp[i - 1] + dp[i - 2];
+    return dp[n];
+}
+
+int main() {
+    printf("%lld\n", fib(10));  // 55
+    return 0;
+}
 ```
 
 | 비교 | Top-Down | Bottom-Up |
@@ -81,17 +94,22 @@ n개의 계단을 1칸 또는 2칸씩 오를 수 있을 때, 경우의 수는?
 
 **초기값**: `dp[1] = 1`, `dp[2] = 2`
 
-```python
-def climb_stairs(n):
-    if n <= 2:
-        return n
-    dp = [0] * (n + 1)
-    dp[1], dp[2] = 1, 2
-    for i in range(3, n + 1):
-        dp[i] = dp[i-1] + dp[i-2]
-    return dp[n]
+```cpp
+#include <cstdio>
 
-print(climb_stairs(5))  # 8
+int climbStairs(int n) {
+    if (n <= 2) return n;
+    int dp[105];
+    dp[1] = 1; dp[2] = 2;
+    for (int i = 3; i <= n; i++)
+        dp[i] = dp[i - 1] + dp[i - 2];
+    return dp[n];
+}
+
+int main() {
+    printf("%d\n", climbStairs(5));  // 8
+    return 0;
+}
 ```
 
 ---

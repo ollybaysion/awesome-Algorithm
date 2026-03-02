@@ -42,35 +42,45 @@ graph TD
 
 ---
 
-## 구현 (Python)
+## 구현 (C++)
 
-```python
-def merge_sort(arr):
-    if len(arr) <= 1:
-        return arr
+```cpp
+#include <cstdio>
 
-    mid = len(arr) // 2
-    left  = merge_sort(arr[:mid])
-    right = merge_sort(arr[mid:])
+const int MAXN = 100005;
+int tmp[MAXN];
 
-    return merge(left, right)
+void merge(int arr[], int lo, int mid, int hi) {
+    int i = lo, j = mid + 1, k = lo;
+    while (i <= mid && j <= hi) {
+        if (arr[i] <= arr[j])
+            tmp[k++] = arr[i++];
+        else
+            tmp[k++] = arr[j++];
+    }
+    while (i <= mid) tmp[k++] = arr[i++];
+    while (j <= hi)  tmp[k++] = arr[j++];
+    for (int i = lo; i <= hi; i++)
+        arr[i] = tmp[i];
+}
 
-def merge(left, right):
-    result = []
-    i = j = 0
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            result.append(left[i])
-            i += 1
-        else:
-            result.append(right[j])
-            j += 1
-    result.extend(left[i:])
-    result.extend(right[j:])
-    return result
+void mergeSort(int arr[], int lo, int hi) {
+    if (lo >= hi) return;
+    int mid = (lo + hi) / 2;
+    mergeSort(arr, lo, mid);
+    mergeSort(arr, mid + 1, hi);
+    merge(arr, lo, mid, hi);
+}
 
-arr = [5, 3, 8, 1, 9, 2]
-print(merge_sort(arr))  # [1, 2, 3, 5, 8, 9]
+int main() {
+    int arr[] = {5, 3, 8, 1, 9, 2};
+    int n = 6;
+    mergeSort(arr, 0, n - 1);
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);  // 1 2 3 5 8 9
+    printf("\n");
+    return 0;
+}
 ```
 
 ---
@@ -85,28 +95,45 @@ print(merge_sort(arr))  # [1, 2, 3, 5, 8, 9]
 
 합병 정렬을 응용하면 **역순 쌍(i < j이고 arr[i] > arr[j]인 쌍의 수)**을 O(n log n)에 셀 수 있습니다.
 
-```python
-def count_inversions(arr):
-    if len(arr) <= 1:
-        return arr, 0
-    mid = len(arr) // 2
-    left,  l_inv = count_inversions(arr[:mid])
-    right, r_inv = count_inversions(arr[mid:])
+```cpp
+#include <cstdio>
 
-    merged, split_inv = [], 0
-    i = j = 0
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            merged.append(left[i]); i += 1
-        else:
-            merged.append(right[j]); j += 1
-            split_inv += len(left) - i  # 남은 left 원소 모두 역순 쌍
-    merged.extend(left[i:])
-    merged.extend(right[j:])
-    return merged, l_inv + r_inv + split_inv
+const int MAXN = 100005;
+int tmp[MAXN];
+long long invCount;
 
-_, cnt = count_inversions([5, 3, 8, 1])
-print(cnt)  # 4
+void mergeCount(int arr[], int lo, int mid, int hi) {
+    int i = lo, j = mid + 1, k = lo;
+    while (i <= mid && j <= hi) {
+        if (arr[i] <= arr[j]) {
+            tmp[k++] = arr[i++];
+        } else {
+            tmp[k++] = arr[j++];
+            invCount += (mid - i + 1);  // 남은 left 원소 모두 역순 쌍
+        }
+    }
+    while (i <= mid) tmp[k++] = arr[i++];
+    while (j <= hi)  tmp[k++] = arr[j++];
+    for (int i = lo; i <= hi; i++)
+        arr[i] = tmp[i];
+}
+
+void sortCount(int arr[], int lo, int hi) {
+    if (lo >= hi) return;
+    int mid = (lo + hi) / 2;
+    sortCount(arr, lo, mid);
+    sortCount(arr, mid + 1, hi);
+    mergeCount(arr, lo, mid, hi);
+}
+
+int main() {
+    int arr[] = {5, 3, 8, 1};
+    int n = 4;
+    invCount = 0;
+    sortCount(arr, 0, n - 1);
+    printf("%lld\n", invCount);  // 4
+    return 0;
+}
 ```
 
 ---

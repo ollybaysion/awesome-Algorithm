@@ -28,48 +28,45 @@ tags: [quick-sort, pivot, partition, O(nlogn)]
 
 ---
 
-## 구현 (Python)
+## 구현 (C++ — Lomuto Partition)
 
-### 간단한 버전
+```cpp
+#include <cstdio>
 
-```python
-def quick_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left   = [x for x in arr if x < pivot]
-    middle = [x for x in arr if x == pivot]
-    right  = [x for x in arr if x > pivot]
-    return quick_sort(left) + middle + quick_sort(right)
+void swap(int& a, int& b) {
+    int t = a; a = b; b = t;
+}
 
-print(quick_sort([3, 6, 8, 10, 1, 2, 1]))
-# [1, 1, 2, 3, 6, 8, 10]
-```
+int partition(int arr[], int lo, int hi) {
+    int pivot = arr[hi];
+    int i = lo - 1;
+    for (int j = lo; j < hi; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[hi]);
+    return i + 1;
+}
 
-### In-place 버전 (Lomuto partition)
+void quickSort(int arr[], int lo, int hi) {
+    if (lo < hi) {
+        int p = partition(arr, lo, hi);
+        quickSort(arr, lo, p - 1);
+        quickSort(arr, p + 1, hi);
+    }
+}
 
-```python
-def quick_sort_inplace(arr, lo=0, hi=None):
-    if hi is None:
-        hi = len(arr) - 1
-    if lo < hi:
-        p = partition(arr, lo, hi)
-        quick_sort_inplace(arr, lo, p - 1)
-        quick_sort_inplace(arr, p + 1, hi)
-
-def partition(arr, lo, hi):
-    pivot = arr[hi]
-    i = lo - 1
-    for j in range(lo, hi):
-        if arr[j] <= pivot:
-            i += 1
-            arr[i], arr[j] = arr[j], arr[i]
-    arr[i+1], arr[hi] = arr[hi], arr[i+1]
-    return i + 1
-
-arr = [3, 6, 8, 10, 1, 2, 1]
-quick_sort_inplace(arr)
-print(arr)  # [1, 1, 2, 3, 6, 8, 10]
+int main() {
+    int arr[] = {3, 6, 8, 10, 1, 2, 1};
+    int n = 7;
+    quickSort(arr, 0, n - 1);
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);  // 1 1 2 3 6 8 10
+    printf("\n");
+    return 0;
+}
 ```
 
 ---
@@ -78,16 +75,36 @@ print(arr)  # [1, 1, 2, 3, 6, 8, 10]
 
 피벗을 **무작위(random)**로 선택하면 최악 케이스 확률을 낮출 수 있습니다.
 
-```python
-import random
+```cpp
+#include <cstdlib>
 
-def randomized_quick_sort(arr, lo, hi):
-    if lo < hi:
-        rand_idx = random.randint(lo, hi)
-        arr[rand_idx], arr[hi] = arr[hi], arr[rand_idx]
-        p = partition(arr, lo, hi)
-        randomized_quick_sort(arr, lo, p - 1)
-        randomized_quick_sort(arr, p + 1, hi)
+void randomizedQuickSort(int arr[], int lo, int hi) {
+    if (lo < hi) {
+        // 랜덤 인덱스를 피벗으로 선택
+        int randIdx = lo + rand() % (hi - lo + 1);
+        swap(arr[randIdx], arr[hi]);
+        int p = partition(arr, lo, hi);
+        randomizedQuickSort(arr, lo, p - 1);
+        randomizedQuickSort(arr, p + 1, hi);
+    }
+}
+```
+
+### Median-of-Three 피벗 선택
+
+```cpp
+void medianOfThreeSort(int arr[], int lo, int hi) {
+    if (lo >= hi) return;
+    int mid = (lo + hi) / 2;
+    // lo, mid, hi 중 중간값을 피벗으로
+    if (arr[lo] > arr[mid]) swap(arr[lo], arr[mid]);
+    if (arr[lo] > arr[hi])  swap(arr[lo], arr[hi]);
+    if (arr[mid] > arr[hi]) swap(arr[mid], arr[hi]);
+    swap(arr[mid], arr[hi]);  // 피벗을 끝으로 이동
+    int p = partition(arr, lo, hi);
+    medianOfThreeSort(arr, lo, p - 1);
+    medianOfThreeSort(arr, p + 1, hi);
+}
 ```
 
 ---
